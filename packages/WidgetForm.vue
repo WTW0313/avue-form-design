@@ -103,7 +103,13 @@ export default {
     handleWidgetAdd (evt) {
       const newIndex = evt.newIndex
       const data = this.deepClone(this.data.column[newIndex])
-      if (!data.prop) data.prop = Date.now() + '_' + Math.ceil(Math.random() * 99999)
+      let componentType = ''
+      if (data.type) {
+        componentType = data.type
+      } else if (data.component) {
+        componentType = data.component.match(/(?<=el-)[a-zA-Z]*/)
+      }
+      if (!data.prop) data.prop = `${componentType}_${Date.now()}`
       delete data.icon
       delete data.subfield
       if (data.type == 'title') {
