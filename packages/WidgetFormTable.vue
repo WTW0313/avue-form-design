@@ -45,6 +45,9 @@
                          type="primary">
                 <i class="iconfont icon-copy"></i>
               </el-button>
+              <div class="widget-table-prop">
+                <span>{{ item.prop }}</span>
+              </div>
             </el-table-column>
           </el-table>
         </div>
@@ -85,11 +88,15 @@
                type="primary">
       <i class="iconfont icon-copy"></i>
     </el-button>
+    <div class="widget-prop">
+      <span>{{ column.prop }}</span>
+    </div>
   </div>
 </template>
 <script>
 import WidgetFormItem from './WidgetFormItem'
 import draggable from 'vuedraggable'
+import { getComponentType } from './utils'
 
 export default {
   name: 'widget-form-table',
@@ -122,9 +129,13 @@ export default {
     },
     handleWidgetCloneTable (index) {
       let cloneData = this.deepClone(this.data.column[index])
-      cloneData.prop = Date.now() + '_' + Math.ceil(Math.random() * 99999)
+      // 获取组件类型
+      const componentType = getComponentType(cloneData)
+      cloneData.prop =  `${componentType}_${Date.now()}_${Math.ceil(Math.random() * 99999)}`
       cloneData.children.column.forEach(t => {
-        t.prop = Date.now() + '_' + Math.ceil(Math.random() * 99999)
+        // 获取组件类型
+        const cloneComponentType = getComponentType(t)
+        t.prop = `${cloneComponentType}_${Date.now()}_${Math.ceil(Math.random() * 99999)}`
       })
       this.data.column.splice(index, 0, cloneData)
       this.$nextTick(() => {
@@ -143,7 +154,9 @@ export default {
       }
 
       const data = this.deepClone(column.children.column[newIndex]);
-      if (!data.prop) data.prop = Date.now() + '_' + Math.ceil(Math.random() * 99999)
+      // 获取组件类型
+      const componentType = getComponentType(data)
+      if (!data.prop) data.prop = `${componentType}_${Date.now()}_${Math.ceil(Math.random() * 99999)}`
       data.subfield = true
       delete data.icon
       this.$set(column.children.column, newIndex, { ...data })
@@ -156,7 +169,9 @@ export default {
     },
     handleWidgetTableClone (column, item) {
       const data = this.deepClone(item);
-      data.prop = Date.now() + '_' + Math.ceil(Math.random() * 99999)
+      // 获取组件类型
+      const componentType = getComponentType(item)
+      data.prop = `${componentType}_${Date.now()}_${Math.ceil(Math.random() * 99999)}`
       this.$set(column.children.column, column.children.column.length, { ...data })
       this.$nextTick(() => {
         this.selectWidget = column.children.column[column.children.column.length - 1]

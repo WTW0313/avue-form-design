@@ -20,3 +20,13 @@ export const stringify = (json) => {
   }
   return str
 }
+
+export const getComponentType = (data) => {
+  let componentType = ''
+  if (data.type) {
+    componentType = data.type
+  } else if (data.component) {
+    componentType = data.component.match(/(?<=el-)[a-zA-Z]*/)
+  }
+  return componentType
+}

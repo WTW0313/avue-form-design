@@ -301,12 +301,12 @@ export default {
     },
     showGithubStar: {
       type: Boolean,
-      default: true
+      default: false
     },
     toolbar: {
       type: Array,
       default: () => {
-        return ['import', 'generate', 'preview', 'clear']
+        return ['avue-doc', 'import', 'generate', 'preview', 'clear']
       }
     },
     undoRedo: {

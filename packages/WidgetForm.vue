@@ -71,6 +71,9 @@
                            type="primary">
                   <i class="iconfont icon-copy"></i>
                 </el-button>
+                <div class="widget-prop">
+                  <span>{{ column.prop }}</span>
+                </div>
               </el-form-item>
             </el-col>
           </template>
@@ -85,6 +88,7 @@ import WidgetFormItem from './WidgetFormItem'
 import WidgetFormTable from './WidgetFormTable'
 import WidgetFormGroup from './WidgetFormGroup'
 import Draggable from 'vuedraggable'
+import { getComponentType } from './utils'
 
 export default {
   name: 'widget-form',
@@ -103,13 +107,9 @@ export default {
     handleWidgetAdd (evt) {
       const newIndex = evt.newIndex
       const data = this.deepClone(this.data.column[newIndex])
-      let componentType = ''
-      if (data.type) {
-        componentType = data.type
-      } else if (data.component) {
-        componentType = data.component.match(/(?<=el-)[a-zA-Z]*/)
-      }
-      if (!data.prop) data.prop = `${componentType}_${Date.now()}`
+      // 获取组件类型
+      const componentType = getComponentType(data)
+      if (!data.prop) data.prop = `${componentType}_${Date.now()}_${Math.ceil(Math.random() * 99999)}`
       delete data.icon
       delete data.subfield
       if (data.type == 'title') {
@@ -134,7 +134,9 @@ export default {
     },
     handleWidgetClone (index) {
       let cloneData = this.deepClone(this.data.column[index])
-      cloneData.prop = Date.now() + '_' + Math.ceil(Math.random() * 99999)
+      // 获取组件类型
+      const componentType = getComponentType(cloneData)
+      cloneData.prop = `${componentType}_${Date.now()}_${Math.ceil(Math.random() * 99999)}`
       this.data.column.splice(index, 0, cloneData)
       this.$nextTick(() => {
         this.handleSelectWidget(index + 1)
