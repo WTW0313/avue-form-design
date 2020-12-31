@@ -71,16 +71,24 @@
         <el-header class="widget-container-header">
           <div>
             <template v-if="undoRedo">
-              <el-button type="text"
-                         size="medium"
-                         icon="el-icon-refresh-left"
-                         :disabled="historySteps.index == 0"
-                         @click="widgetForm = handleUndo()">撤销</el-button>
-              <el-button type="text"
-                         size="medium"
-                         icon="el-icon-refresh-right"
-                         :disabled="historySteps.index == historySteps.steps.length - 1"
-                         @click="widgetForm = handleRedo()">重做</el-button>
+              <el-tooltip effect="dark"
+                          content="cmd + Z / Ctrl + Z"
+                          placement="bottom">
+                <el-button type="text"
+                          size="medium"
+                          icon="el-icon-refresh-left"
+                          :disabled="historySteps.index == 0"
+                          @click="widgetForm = handleUndo()">撤销</el-button>
+              </el-tooltip>
+              <el-tooltip effect="dark"
+                          content="cmd + shift + Z / Ctrl + Shift + Z / Ctrl + Y"
+                          placement="bottom">
+                <el-button type="text"
+                          size="medium"
+                          icon="el-icon-refresh-right"
+                          :disabled="historySteps.index == historySteps.steps.length - 1"
+                          @click="widgetForm = handleRedo()">重做</el-button>
+              </el-tooltip>
             </template>
           </div>
           <div style="display: flex; align-items: center;">
@@ -306,7 +314,7 @@ export default {
     toolbar: {
       type: Array,
       default: () => {
-        return ['avue-doc', 'import', 'generate', 'preview', 'clear']
+        return ['preview', 'clear']
       }
     },
     undoRedo: {
