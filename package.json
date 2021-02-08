@@ -6,7 +6,7 @@
     "email": "925448163@qq.com"
   },
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "lib/index.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
